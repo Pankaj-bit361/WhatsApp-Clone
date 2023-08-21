@@ -5,25 +5,31 @@ import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode"
 import { LoginContext } from "../context/LoginContextProvider";
 import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios"
+
 
 const Home = () => {
 
 const {state,setState}=useContext(LoginContext)
 const navigate=useNavigate()
+
+
  const loginSuccess=(res)=>{
   const decode=jwt_decode(res.credential)
    setState(decode)
+    axios.post(`http://localhost:8000/users`,decode)
+    .then((res)=>{
+      console.log(res.data)
+    })
    navigate("/messenger")
  } 
-
+ 
 const loginError=(res)=>{
 console.log(res)
 }
 
 
-// if(state){
-//   return <Navigate to="/messenger"/>
-// }
+
 
     
   return (
