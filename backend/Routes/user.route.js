@@ -14,6 +14,16 @@ UserRouter.get(`/`,async(req,res)=>{
     }
 })
 
+UserRouter.get(`/:id`,async(req,res)=>{
+const {id}=req.params
+console.log(id)
+    try {
+        let user=await UserModel.findOne({_id:id})
+        res.send(user)
+    } catch (error) {
+        res.send({msg:error.message})
+    }
+})
 
 UserRouter.post('/' ,async(req,res)=>{
  let {email}=req.body
@@ -33,6 +43,7 @@ UserRouter.post('/' ,async(req,res)=>{
 
 })
   
+
 module.exports={
     UserRouter
 }
