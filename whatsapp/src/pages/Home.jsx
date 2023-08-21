@@ -8,8 +8,9 @@ import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios"
 
 
-const Home = () => {
+import {ApiUrl} from "../api"
 
+const Home = () => {
 const {state,setState}=useContext(LoginContext)
 const navigate=useNavigate()
 
@@ -17,7 +18,7 @@ const navigate=useNavigate()
  const loginSuccess=(res)=>{
   const decode=jwt_decode(res.credential)
    setState(decode)
-    axios.post(`http://localhost:8000/users`,decode)
+    axios.post(`${ApiUrl}/users`,decode)
     .then((res)=>{
   
     })
