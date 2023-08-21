@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatUser = ({ picture, given_name,_id,getSingleProfile }) => {
+const ChatUser = ({ picture, given_name,_id,getSingleProfile  }) => {
 
 
 const handleMesseges=()=>{

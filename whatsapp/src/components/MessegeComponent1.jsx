@@ -11,7 +11,7 @@ const {state}=useContext(LoginContext)
  {data.length>0 && data.map((item)=>(
   item.sub!==state.sub &&
   <div key={item.sub}>
-    <ChatUser getSingleProfile={getSingleProfile}  {...item}/>
+    <ChatUser getSingleProfile={getSingleProfile}   {...item}/>
     </div>
 
  ))}
