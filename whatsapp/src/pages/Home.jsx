@@ -18,7 +18,7 @@ const navigate=useNavigate()
  const loginSuccess=(res)=>{
   const decode=jwt_decode(res.credential)
    setState(decode)
-    axios.post(`${ApiUrl}/users`,decode)
+    axios.post(`${ApiUrl}users`,decode)
     .then((res)=>{
   
     })
