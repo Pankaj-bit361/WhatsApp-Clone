@@ -31,13 +31,23 @@ const Messeger = () => {
     getUSers();
   }, [search]);
 
-  const getSingleProfile = (id) => {
+  const getSingleProfile =async (id) => {
     axios.get(`${ApiUrl}users/${id}`).then((res) => {
       console.log(res.data);
       setPerson(res.data);
       setSwap(false);
+
     });
-  };
+    let ob={
+      recieverId:person.sub,
+      senderId:state.sub
+    }
+   await axios.post(`http://localhost:8000/chat`,ob)
+   .then((res)=>{
+    console.log(res)
+   })
+
+  };   
 
   return (
     <div className="bg-[#ededed] relative">

@@ -20,7 +20,7 @@ const navigate=useNavigate()
    setState(decode)
     axios.post(`${ApiUrl}users`,decode)
     .then((res)=>{
-  
+  console.log(res)
     })
    navigate("/messenger")
  } 
