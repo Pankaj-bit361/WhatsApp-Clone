@@ -13,16 +13,26 @@ import { ApiUrl } from "../api";
 import MessegeCompont3 from "../components/MessegeCompont3";
 
 const Messeger = () => {
-  const { state } = useContext(LoginContext);
+  let oathData = JSON.parse(localStorage.getItem("oath"));
+
+  const { state, setState } = useContext(LoginContext);
   const [profile, setProfile] = useState(false);
   const [data, setData] = useState([]);
   const [swap, setSwap] = useState(true);
-  const [person, setPerson] = useState({});
-  const [search,setSearch]=useState("")
+
+  const [search, setSearch] = useState("");
+
+  const { person1 } = useContext(LoginContext);
+
+  useEffect(() => {
+    setState(oathData);
+  }, [oathData.sub]);
 
   const getUSers = () => {
     axios.get(`${ApiUrl}users`).then((res) => {
-      let filteredData=res.data.filter((item)=>item.given_name.toLowerCase().includes(search.toLowerCase()))
+      let filteredData = res.data.filter((item) =>
+        item.given_name.toLowerCase().includes(search.toLowerCase())
+      );
       setData(filteredData);
     });
   };
@@ -31,23 +41,19 @@ const Messeger = () => {
     getUSers();
   }, [search]);
 
-  const getSingleProfile =async (id) => {
-    axios.get(`${ApiUrl}users/${id}`).then((res) => {
-      console.log(res.data);
-      setPerson(res.data);
-      setSwap(false);
+  const getSingleProfile = async () => {
+    let ob = {
+      recieverId: person1.sub,
+      senderId: state.sub,
+    };
+    await axios.post(`${ApiUrl}chat`, ob);
+  };
 
-    });
-    let ob={
-      recieverId:person.sub,
-      senderId:state.sub
+  const handleMessege = (e) => {
+    if (e.keyCode == 13) {
+      
     }
-   await axios.post(`http://localhost:8000/chat`,ob)
-   .then((res)=>{
-    console.log(res)
-   })
-
-  };   
+  };
 
   return (
     <div className="bg-[#ededed] relative">
@@ -78,7 +84,7 @@ const Messeger = () => {
               <input
                 placeholder="  Search or start a new chat"
                 className="border-none w-[90%] mt-2 h-[5vh] rounded ml-2 bg-[#f0f2f5] placeholder:text-[13px] "
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
               />
 
               <div className="mt-2">
@@ -93,7 +99,11 @@ const Messeger = () => {
         )}
 
         <div className="w-[70%]">
-          {swap ? <MessegeComponent2 /> : <MessegeCompont3 {...person} />}
+          {Object.keys(person1).length == 0 ? (
+            <MessegeComponent2 />
+          ) : (
+            <MessegeCompont3 {...person1} handleMessege={handleMessege} />
+          )}
         </div>
       </div>
     </div>

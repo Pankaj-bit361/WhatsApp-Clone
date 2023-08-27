@@ -13,14 +13,19 @@ import {ApiUrl} from "../api"
 const Home = () => {
 const {state,setState}=useContext(LoginContext)
 const navigate=useNavigate()
+ 
 
 
  const loginSuccess=(res)=>{
   const decode=jwt_decode(res.credential)
+  localStorage.setItem("oath",JSON.stringify(decode))
    setState(decode)
-    axios.post(`${ApiUrl}users`,decode)
+ 
+   axios.post(`${ApiUrl}users`,decode)
+
     .then((res)=>{
-  console.log(res)
+      
+
     })
    navigate("/messenger")
  } 

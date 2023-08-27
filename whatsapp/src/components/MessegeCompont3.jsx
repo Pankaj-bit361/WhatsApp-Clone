@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiMoreVertical } from "react-icons/fi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
 import { HiPlus } from "react-icons/hi";
 
-const MessegeCompont3 = ({ picture, given_name }) => {
+const MessegeCompont3 = ({ picture, given_name,handleMessege }) => {
+
+const [word,setword]=useState("")
+
+
+
+
   return (
     <div>
       <div className="flex h-[7.4vh] bg-[#f0f2f5] justify-between">
@@ -42,7 +48,7 @@ const MessegeCompont3 = ({ picture, given_name }) => {
           <HiPlus size={24} color={"#455A64"}/>
         </div>
         <div className="w-[82%]   ">
-          <input className="w-[100%] h-[5vh] bg-white rounded" placeholder="   Type a messege"/>
+          <input className="w-[100%] h-[5vh] bg-white rounded" placeholder="   Type a messege" onChange={(e)=>setword(e.target.value)} onKeyUp={(e)=>handleMessege(e)}/>
         </div>
         <div className="flex w-[6%]   place-content-center">
           <BsMicFill size={24} color={"#455A64"}/>
