@@ -49,11 +49,6 @@ const Messeger = () => {
     await axios.post(`${ApiUrl}chat`, ob);
   };
 
-  const handleMessege = (e) => {
-    if (e.keyCode == 13) {
-      
-    }
-  };
 
   return (
     <div className="bg-[#ededed] relative">
@@ -102,7 +97,7 @@ const Messeger = () => {
           {Object.keys(person1).length == 0 ? (
             <MessegeComponent2 />
           ) : (
-            <MessegeCompont3 {...person1} handleMessege={handleMessege} />
+            <MessegeCompont3 {...person1}  />
           )}
         </div>
       </div>

@@ -1,16 +1,52 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FiMoreVertical } from "react-icons/fi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
 import { HiPlus } from "react-icons/hi";
-
-const MessegeCompont3 = ({ picture, given_name,handleMessege }) => {
-
-const [word,setword]=useState("")
-
+import Allmesseges from "./Allmesseges";
+import { LoginContext } from "../context/LoginContextProvider";
+import axios from "axios";
 
 
+const MessegeCompont3 = ({ picture, given_name, sub }) => {
+  const [word, setword] = useState("");
+  const { state } = useContext(LoginContext);
+  const [con, setcon] = useState({});
+  const [flag,setflag]=useState(false)
+  
+  
+
+  const getConversation = () => {
+    let ob = { receiverId: sub, senderId: state.sub };
+    axios.post(`http://localhost:8000/chat/conversation`, ob).then((res) => {
+      console.log(res.data);
+      setcon(res.data);
+    });
+  };
+
+ 
+
+  useEffect(() => {
+    getConversation();
+
+  }, [sub]);
+
+  const handleMessege = (e) => {
+    if (e.keyCode === 13) {
+      let messege = {
+        receiverId: sub,
+        senderId: state.sub,
+        conversationId: con._id,
+        text: word,
+        type: "text",
+      };
+      axios.post(`http://localhost:8000/message`, messege);
+      setflag(prev=>!prev)
+      setword("")
+      
+    }     
+  };
 
   return (
     <div>
@@ -37,21 +73,26 @@ const [word,setword]=useState("")
         </div>
       </div>
 
-      <div className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] h-[80vh] w-[100%]"></div>
-
+      <Allmesseges con={con} flag={flag}  />
 
       <div className="flex place-items-center h-[7.3vh] bg-[#f0f2f5]">
         <div className="flex w-[6%]  place-content-center">
           <BsEmojiSmile size={24} color={"#455A64"} />
         </div>
         <div className="flex w-[6%] place-content-center">
-          <HiPlus size={24} color={"#455A64"}/>
+          <HiPlus size={24} color={"#455A64"} />
         </div>
         <div className="w-[82%]   ">
-          <input className="w-[100%] h-[5vh] bg-white rounded" placeholder="   Type a messege" onChange={(e)=>setword(e.target.value)} onKeyUp={(e)=>handleMessege(e)}/>
+          <input
+            className="w-[100%] h-[5vh] bg-white rounded "
+            placeholder="   Type a messege"
+            onChange={(e) => setword(e.target.value)}
+            onKeyUp={(e) => handleMessege(e)}
+            value={word}
+          />
         </div>
         <div className="flex w-[6%]   place-content-center">
-          <BsMicFill size={24} color={"#455A64"}/>
+          <BsMicFill size={24} color={"#455A64"} />
         </div>
       </div>
     </div>

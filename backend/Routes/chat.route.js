@@ -31,6 +31,19 @@ ChatRouter.get('/',async(req,res)=>{
     }
 })
 
+
+ChatRouter.post("/conversation",async(req,res)=>{
+
+    const {receiverId,senderId}=req.body
+    try {
+        let conversation=await ChatModel.findOne({members:{$all:[receiverId,senderId]}})
+        res.status(200).send(conversation)
+        
+    } catch (error) {
+        res.status(400).send({err:error.message})
+    }
+})
+
 module.exports={
 
     ChatRouter

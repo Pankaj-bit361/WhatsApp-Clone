@@ -5,6 +5,7 @@ const cors=require('cors')
 const { connection } = require('./db')
 const { UserRouter } = require('./Routes/user.route')
 const { ChatRouter } = require('./Routes/chat.route')
+const { MessageRouter } = require('./Routes/message.route')
 app.use(cors())
 app.use(express.json())
 
@@ -14,6 +15,7 @@ res.send(`hello`)
 
 app.use("/users",UserRouter)   
 app.use("/chat",ChatRouter)
+app.use("/message",MessageRouter)
     
 app.listen(process.env.port,async ()=>{
 
