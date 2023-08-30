@@ -7,32 +7,33 @@ import { HiPlus } from "react-icons/hi";
 import Allmesseges from "./Allmesseges";
 import { LoginContext } from "../context/LoginContextProvider";
 import axios from "axios";
+import { ApiUrl } from "../api";
+
+
 
 
 const MessegeCompont3 = ({ picture, given_name, sub }) => {
   const [word, setword] = useState("");
   const { state } = useContext(LoginContext);
   const [con, setcon] = useState({});
-  const [flag,setflag]=useState(false)
-  
-  
+  const [flag, setflag] = useState(false);
 
-  const getConversation = () => {
+
+
+
+  const getConversation = async () => {
     let ob = { receiverId: sub, senderId: state.sub };
-    axios.post(`http://localhost:8000/chat/conversation`, ob).then((res) => {
+    await axios.post(`${ApiUrl}/chat/conversation`, ob).then((res) => {
       console.log(res.data);
       setcon(res.data);
     });
   };
 
- 
-
   useEffect(() => {
     getConversation();
-
   }, [sub]);
 
-  const handleMessege = (e) => {
+  const handleMessege = async (e) => {
     if (e.keyCode === 13) {
       let messege = {
         receiverId: sub,
@@ -41,11 +42,10 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         text: word,
         type: "text",
       };
-      axios.post(`http://localhost:8000/message`, messege);
-      setflag(prev=>!prev)
-      setword("")
-      
-    }     
+      await axios.post(`${ApiUrl}/message`, messege);
+      setflag((prev) => !prev);
+      setword("");
+    }
   };
 
   return (
@@ -73,14 +73,21 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         </div>
       </div>
 
-      <Allmesseges con={con} flag={flag}  />
+      <Allmesseges con={con} flag={flag} />
 
       <div className="flex place-items-center h-[7.3vh] bg-[#f0f2f5]">
         <div className="flex w-[6%]  place-content-center">
           <BsEmojiSmile size={24} color={"#455A64"} />
         </div>
+        
+          <input type="file" style={{display:"none"}} 
+            id="fileinput"
+          />
+      
         <div className="flex w-[6%] place-content-center">
+          <label htmlFor="fileinput">
           <HiPlus size={24} color={"#455A64"} />
+          </label>
         </div>
         <div className="w-[82%]   ">
           <input

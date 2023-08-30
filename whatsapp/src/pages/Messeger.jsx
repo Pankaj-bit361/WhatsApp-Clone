@@ -29,7 +29,8 @@ const Messeger = () => {
   }, [oathData.sub]);
 
   const getUSers = () => {
-    axios.get(`${ApiUrl}users`).then((res) => {
+    axios.get(`${ApiUrl}/users`).then((res) => {
+
       let filteredData = res.data.filter((item) =>
         item.given_name.toLowerCase().includes(search.toLowerCase())
       );
@@ -46,7 +47,7 @@ const Messeger = () => {
       recieverId: person1.sub,
       senderId: state.sub,
     };
-    await axios.post(`${ApiUrl}chat`, ob);
+    await axios.post(`${ApiUrl}/chat`, ob);
   };
 
 

@@ -21,7 +21,7 @@ const navigate=useNavigate()
   localStorage.setItem("oath",JSON.stringify(decode))
    setState(decode)
  
-   axios.post(`${ApiUrl}users`,decode)
+   axios.post(`${ApiUrl}/users`,decode)
 
     .then((res)=>{
       

@@ -5,7 +5,7 @@ const ChatUser = ({item ,getSingleProfile}) => {
 
 const {setPerson1}=useContext(LoginContext)
 
-const handleMesseges=({})=>{
+const handleMesseges=()=>{
   setPerson1(item)
   getSingleProfile()
 }
