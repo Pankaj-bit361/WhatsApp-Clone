@@ -1,7 +1,7 @@
 const express = require(`express`);
 
 const fileRouter = express.Router();
-const url = "https://whats-app-78.vercel.app/";
+const url = "https://whats-app-clone-orpin.vercel.app";
 const upload = require("../middleware/file");
 
 const grid = require("gridfs-stream");
