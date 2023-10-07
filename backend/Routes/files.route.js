@@ -16,7 +16,7 @@ conn.once("open", () => {
   });
   gfs = grid(conn.db, mongoose.mongo);
   gfs.collection("fs");
-});
+}); 
 
 fileRouter.post("/", upload.single("file"), async (req, res) => {
   if (!req.file) {
