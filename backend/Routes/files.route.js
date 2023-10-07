@@ -1,14 +1,14 @@
 const express = require(`express`);
 
 const fileRouter = express.Router();
-const url = "http://localhost:8000";
+const url = "https://whats-app-78.vercel.app/";
 const upload = require("../middleware/file");
 
 const grid = require("gridfs-stream");
 const mongoose = require("mongoose");
 
 let gridFsBucket, gfs;
-
+   
 const conn = mongoose.connection;
 conn.once("open", () => {
   gridFsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
