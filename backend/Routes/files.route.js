@@ -14,7 +14,7 @@ conn.once("open", () => {
   gridFsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
     bucketName: "fs",
   });
-  gfs = grid(conn.db, mongoose.mongo);
+  gfs = grid(conn.db, mongoose.mongo);   
   gfs.collection("fs");
 }); 
 
