@@ -9,17 +9,13 @@ import { LoginContext } from "../context/LoginContextProvider";
 import axios from "axios";
 import { ApiUrl } from "../api";
 
-
-
-
 const MessegeCompont3 = ({ picture, given_name, sub }) => {
   const [word, setword] = useState("");
   const { state } = useContext(LoginContext);
   const [con, setcon] = useState({});
   const [flag, setflag] = useState(false);
-
-
-
+  const [file, setFile] = useState({});
+  const [image, setImage] = useState("");
 
   const getConversation = async () => {
     let ob = { receiverId: sub, senderId: state.sub };
@@ -35,17 +31,56 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
 
   const handleMessege = async (e) => {
     if (e.keyCode === 13) {
-      let messege = {
-        receiverId: sub,
-        senderId: state.sub,
-        conversationId: con._id,
-        text: word,
-        type: "text",
-      };
-      await axios.post(`${ApiUrl}/message`, messege);
-      setflag((prev) => !prev);
-      setword("");
+      if (file) {
+        let messege = {
+          receiverId: sub,
+          senderId: state.sub,
+          conversationId: con._id,
+          text: image,
+          type: "file",
+        };
+        await axios.post(`${ApiUrl}/message`, messege);
+        setflag((prev) => !prev);
+        setword("");
+        setImage('')
+      } else {
+        let messege = {
+          receiverId: sub,
+          senderId: state.sub,
+          conversationId: con._id,
+          text: word,
+          type: "text",
+        };
+        await axios.post(`${ApiUrl}/message`, messege);
+        setflag((prev) => !prev);
+        setword("");
+      }
     }
+  };
+
+  const getFile = async () => {
+    if (file) {
+      const data = new FormData();
+      data.append("name", file.name);
+      data.append("file", file);
+      try {
+        await axios.post(`${ApiUrl}/file`, data).then((res) => {
+          console.log(res);
+          setImage(res.data)
+        });
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getFile();
+  }, [file]);
+
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+    setword(e.target.files[0].name);
   };
 
   return (
@@ -79,14 +114,17 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         <div className="flex w-[6%]  place-content-center">
           <BsEmojiSmile size={24} color={"#455A64"} />
         </div>
-        
-          <input type="file" style={{display:"none"}} 
-            id="fileinput"
-          />
-      
+
+        <input
+          onChange={handleFile}
+          type="file"
+          style={{ display: "none" }}
+          id="fileinput"
+        />
+
         <div className="flex w-[6%] place-content-center">
           <label htmlFor="fileinput">
-          <HiPlus size={24} color={"#455A64"} />
+            <HiPlus size={24} color={"#455A64"} />
           </label>
         </div>
         <div className="w-[82%]   ">
