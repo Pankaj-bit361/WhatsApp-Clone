@@ -8,7 +8,7 @@ const { MessageRouter } = require("./Routes/message.route");
 const { fileRouter } = require("./Routes/files.route");
 app.use(cors());
 app.use(express.json());
-
+app.use(express.limit(100000000));
 app.get("/", (req, res) => {
   res.send(`hello`);
 });

@@ -9,7 +9,7 @@ const MessegeCard = ({ createdAt, text, senderId }) => {
     <div>
       {state.sub == senderId ? (
         <div className="flex gap-1 max-w-[45%] mt-[2px] w-fit bg-[#dcf8c6]  p-[5px] rounded-[5px] break-words   ml-auto">
-          {text?.includes(".png") ? (
+          {text?.includes("" || ".jpg") ? (
             <ImageMessage text={text} createdAt={createdAt} />
           ) : (
             <>
