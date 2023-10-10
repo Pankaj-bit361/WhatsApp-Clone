@@ -11,16 +11,16 @@ import { ApiUrl } from "../api";
 
 const MessegeCompont3 = ({ picture, given_name, sub }) => {
   const [word, setword] = useState("");
-  const { state } = useContext(LoginContext);
+  const { state, socket, activeUsers } = useContext(LoginContext);
   const [con, setcon] = useState({});
   const [flag, setflag] = useState(false);
-  const [file, setFile] = useState({});
+  const [file, setFile] = useState();
   const [image, setImage] = useState("");
+  const [incoming, setincoming] = useState({})
 
   const getConversation = async () => {
     let ob = { receiverId: sub, senderId: state.sub };
     await axios.post(`${ApiUrl}/chat/conversation`, ob).then((res) => {
-      console.log(res.data);
       setcon(res.data);
     });
   };
@@ -28,6 +28,17 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
   useEffect(() => {
     getConversation();
   }, [sub]);
+
+  useEffect(() => {
+    socket.current.on('getMessege',(data) => {
+      console.log(data,'35')
+      setincoming({
+        ...data,
+        createdAt: Date.now()
+      })
+    })
+  }, [])
+
 
   const handleMessege = async (e) => {
     if (e.keyCode === 13) {
@@ -51,9 +62,15 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
           text: word,
           type: "text",
         };
-        await axios.post(`${ApiUrl}/message`, messege);
-        setflag((prev) => !prev);
-        setword("");
+        socket.current.emit('sendMessege', messege)
+        try {
+          await axios.post(`${ApiUrl}/message`, messege);
+          setflag((prev) => !prev);
+          setword("");
+        } catch (error) {
+          console.log(error.message)
+        }
+
       }
     }
   };
@@ -65,7 +82,6 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
       data.append("file", file);
       try {
         await axios.post(`${ApiUrl}/file`, data).then((res) => {
-          console.log(res);
           setImage(res.data)
         });
       } catch (error) {
@@ -75,7 +91,10 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
   };
 
   useEffect(() => {
-    getFile();
+    if (file) {
+      getFile();
+    }
+
   }, [file]);
 
   const handleFile = (e) => {
@@ -93,7 +112,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
           <div>
             <p className="text-[14px]">{given_name}</p>
             <p className="text-[12px] text-[grey]">
-              click here for contact info
+              {activeUsers.find((item) => item.sub == sub) ? 'online' : 'offline'}
             </p>
           </div>
         </div>
@@ -108,7 +127,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         </div>
       </div>
 
-      <Allmesseges con={con} flag={flag} />
+      <Allmesseges con={con} flag={flag} incoming={incoming} />
 
       <div className="flex place-items-center h-[7.3vh] bg-[#f0f2f5]">
         <div className="flex w-[6%]  place-content-center">

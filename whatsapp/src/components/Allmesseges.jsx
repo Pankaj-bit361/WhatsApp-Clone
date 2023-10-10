@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import MessegeCard from "./MessegeCard";
 import { ApiUrl } from "../api";
 
-const Allmesseges = ({ con, flag }) => {
+const Allmesseges = ({ con, flag, incoming }) => {
   const [messeges, setMesseges] = useState([]);
 
   const getMesseges = async () => {
@@ -17,9 +17,18 @@ const Allmesseges = ({ con, flag }) => {
       });
   };
 
+
+
   useEffect(() => {
     con._id && getMesseges();
   }, [con._id, flag]);
+
+  useEffect(() => {
+    incoming && con?.members?.includes(incoming.senderId)
+      && setMesseges((prev) => [...prev, incoming])
+  }, [incoming, con])
+
+
 
   return (
     <div className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] overflow-x-auto h-[80vh] w-[100%]">

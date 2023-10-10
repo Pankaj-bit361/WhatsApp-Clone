@@ -4,7 +4,7 @@ import Qr from "../Images/qr.png";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { LoginContext } from "../context/LoginContextProvider";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { ApiUrl } from "../api";
@@ -15,13 +15,13 @@ const Home = () => {
 
   const loginSuccess = (res) => {
     const decode = jwt_decode(res.credential);
-    localStorage.setItem("oath", JSON.stringify(decode));
+    // localStorage.setItem("oath", JSON.stringify(decode));
     setState(decode);
 
     axios
       .post(`${ApiUrl}/users`, decode)
 
-      .then((res) => {});
+      .then((res) => { });
     navigate("/messenger");
   };
 

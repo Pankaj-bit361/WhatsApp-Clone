@@ -15,7 +15,7 @@ import MessegeCompont3 from "../components/MessegeCompont3";
 const Messeger = () => {
   let oathData = JSON.parse(localStorage.getItem("oath"));
 
-  const { state, setState } = useContext(LoginContext);
+  const { state, setState, socket, setActiveUsers } = useContext(LoginContext);
   const [profile, setProfile] = useState(false);
   const [data, setData] = useState([]);
   const [swap, setSwap] = useState(true);
@@ -23,11 +23,6 @@ const Messeger = () => {
   const [search, setSearch] = useState("");
 
   const { person1 } = useContext(LoginContext);
-
-  useEffect(() => {
-    setState(oathData);
-  }, [oathData.sub]);
-
   const getUSers = () => {
     axios.get(`${ApiUrl}/users`).then((res) => {
 
@@ -50,7 +45,18 @@ const Messeger = () => {
     await axios.post(`${ApiUrl}/chat`, ob);
   };
 
+  useEffect(() => {
+    socket.current && socket.current.emit('addUsers', state)
+    socket.current && socket.current.on('getUsers', (users) => {
+      setActiveUsers(users)
+      let myuser = users.find((item) => item.sub == state.sub)
+      localStorage.setItem("oath", JSON.stringify(myuser));
+      console.log(myuser)
+      setState(myuser)
+    })
+  }, [state.socketId])
 
+  console.log(state,'58')
   return (
     <div className="bg-[#ededed] relative">
       <div className="h-[18vh] bg-[#4f669b]"></div>
@@ -65,7 +71,7 @@ const Messeger = () => {
               <div className=" w-[50%] border ">
                 <img
                   className=" border  rounded-full  w-[50px] h-[50px] ml-[5%]"
-                  src={state.picture}
+                  src={oathData?.picture}
                   onClick={() => setProfile(!profile)}
                 />
               </div>
@@ -98,7 +104,7 @@ const Messeger = () => {
           {Object.keys(person1).length == 0 ? (
             <MessegeComponent2 />
           ) : (
-            <MessegeCompont3 {...person1}  />
+            <MessegeCompont3 {...person1} />
           )}
         </div>
       </div>

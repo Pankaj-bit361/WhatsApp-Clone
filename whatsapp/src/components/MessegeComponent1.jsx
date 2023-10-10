@@ -2,19 +2,19 @@ import React, { useContext, useEffect } from 'react'
 import ChatUser from './ChatUser'
 import { LoginContext } from '../context/LoginContextProvider'
 
-const MessegeComponent1 = ({data,getSingleProfile}) => {
+const MessegeComponent1 = ({ data, getSingleProfile }) => {
 
-const {state}=useContext(LoginContext)
-
+  // const { state } = useContext(LoginContext)
+  let oathData = JSON.parse(localStorage.getItem("oath"));
   return (
     <div className='divide-y overflow-x-auto h-[80vh]'>
- {data.length>0 && data.map((item)=>(
-  item.sub!==state.sub &&
-  <div key={item.sub}>
-    <ChatUser getSingleProfile={getSingleProfile}   item={item}/>
-    </div>
+      {data.length > 0 && data.map((item) => (
+        item.sub !== oathData.sub &&
+        <div key={item.sub}>
+          <ChatUser getSingleProfile={getSingleProfile} item={item} />
+        </div>
 
- ))}
+      ))}
     </div>
   )
 }
