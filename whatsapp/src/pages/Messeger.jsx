@@ -39,7 +39,7 @@ const Messeger = () => {
 
   useEffect(() => {
     oathData.sub && setState(oathData)
-  }, [oathData])
+  }, [])
 
   const getSingleProfile = async () => {
     let ob = {
@@ -48,8 +48,6 @@ const Messeger = () => {
     };
     await axios.post(`${ApiUrl}/chat`, ob);
   };
-
-  console.log(oathData, person1)
 
   useEffect(() => {
     socket.current && socket.current.emit('addUsers', state)
