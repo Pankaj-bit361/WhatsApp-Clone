@@ -38,7 +38,7 @@ const Messeger = () => {
   }, [search]);
 
   useEffect(() => {
-    oathData.sub && setState(oathData)
+    oathData  && oathData.sub && setState(oathData)
   }, [])
 
   const getSingleProfile = async () => {
