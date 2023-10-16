@@ -8,11 +8,10 @@ app.use(cors())
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: '*',
         methods: ['GET', 'POST']
     }
 })
-
 let users = []
 
 app.get('/', (req, res) => {
@@ -21,7 +20,6 @@ app.get('/', (req, res) => {
 
 const addUser = (userData, socketId) => {
     const existingUser = users.find(user => user.sub === userData.sub);
-    console.log(existingUser, '23')
     if (existingUser) {
         existingUser.socketId = socketId;
     } else {
@@ -30,7 +28,7 @@ const addUser = (userData, socketId) => {
 }
 
 const getUser = (userId) => {
-    console.log(users, userId,'line 33')
+    console.log(users, userId, 'line 33')
     return users.find(user => user.sub == userId)
 }
 
@@ -43,8 +41,10 @@ io.on('connection', (socket) => {
     socket.on('sendMessege', (data) => {
         console.log(data)
         const userdata = getUser(data.receiverId)
-        console.log(userdata, 'line 46')
-        io.to(userdata.socketId).emit('getMessege', data)
+        if (userdata && userdata.socketId) {
+            io.to(userdata.socketId).emit('getMessege', data)
+        }
+
     })
 })
 

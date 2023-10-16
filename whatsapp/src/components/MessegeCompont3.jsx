@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineSend } from "react-icons/ai";
 import { FiMoreVertical } from "react-icons/fi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
@@ -20,6 +20,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
 
   const getConversation = async () => {
     let ob = { receiverId: sub, senderId: state.sub };
+    console.log(ob)
     await axios.post(`${ApiUrl}/chat/conversation`, ob).then((res) => {
       setcon(res.data);
     });
@@ -29,9 +30,11 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
     getConversation();
   }, [sub]);
 
+
+
   useEffect(() => {
-    socket.current.on('getMessege',(data) => {
-      console.log(data,'35')
+    socket.current.on('getMessege', (data) => {
+      console.log(data, '35')
       setincoming({
         ...data,
         createdAt: Date.now()
@@ -39,40 +42,50 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
     })
   }, [])
 
-
-  const handleMessege = async (e) => {
-    if (e.keyCode === 13) {
-      if (file) {
-        let messege = {
-          receiverId: sub,
-          senderId: state.sub,
-          conversationId: con._id,
-          text: image,
-          type: "file",
-        };
+  const postMessage = async () => {
+    console.log('hey', word)
+    if (file) {
+      let messege = {
+        receiverId: sub,
+        senderId: state.sub,
+        conversationId: con._id,
+        text: image,
+        type: "file",
+      };
+      socket.current.emit('sendMessege', messege)
+      await axios.post(`${ApiUrl}/message`, messege);
+      setflag((prev) => !prev);
+      setword("");
+      setImage('')
+      setFile('')
+    } else {
+      let messege = {
+        receiverId: sub,
+        senderId: state.sub,
+        conversationId: con._id,
+        text: word,
+        type: "text",
+      };
+      socket.current.emit('sendMessege', messege)
+      try {
         await axios.post(`${ApiUrl}/message`, messege);
         setflag((prev) => !prev);
         setword("");
-        setImage('')
-      } else {
-        let messege = {
-          receiverId: sub,
-          senderId: state.sub,
-          conversationId: con._id,
-          text: word,
-          type: "text",
-        };
-        socket.current.emit('sendMessege', messege)
-        try {
-          await axios.post(`${ApiUrl}/message`, messege);
-          setflag((prev) => !prev);
-          setword("");
-        } catch (error) {
-          console.log(error.message)
-        }
+        setFile('')
+      } catch (error) {
+        console.log(error.message)
+      }
 
+    }
+  }
+
+  const handleMessege = async (e) => {
+    if (word.length > 0) {
+      if (e.keyCode === 13) {
+       postMessage()
       }
     }
+
   };
 
   const getFile = async () => {
@@ -148,15 +161,16 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         </div>
         <div className="w-[82%]   ">
           <input
-            className="w-[100%] h-[5vh] bg-white rounded "
+            className="w-[100%] h-[5vh] bg-white rounded focus:outline-none p-5"
             placeholder="   Type a messege"
             onChange={(e) => setword(e.target.value)}
             onKeyUp={(e) => handleMessege(e)}
             value={word}
+            minLength={1}
           />
         </div>
         <div className="flex w-[6%]   place-content-center">
-          <BsMicFill size={24} color={"#455A64"} />
+          {word ? <div onClick={() => postMessage()}><AiOutlineSend size={24} /></div> : <BsMicFill size={24} color={"#455A64"} />}
         </div>
       </div>
     </div>

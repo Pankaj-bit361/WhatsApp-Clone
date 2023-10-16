@@ -37,6 +37,10 @@ const Messeger = () => {
     getUSers();
   }, [search]);
 
+  useEffect(() => {
+    oathData.sub && setState(oathData)
+  }, [oathData])
+
   const getSingleProfile = async () => {
     let ob = {
       recieverId: person1.sub,
@@ -45,21 +49,22 @@ const Messeger = () => {
     await axios.post(`${ApiUrl}/chat`, ob);
   };
 
+  console.log(oathData, person1)
+
   useEffect(() => {
     socket.current && socket.current.emit('addUsers', state)
     socket.current && socket.current.on('getUsers', (users) => {
       setActiveUsers(users)
       let myuser = users.find((item) => item.sub == state.sub)
       localStorage.setItem("oath", JSON.stringify(myuser));
-      console.log(myuser)
+
       setState(myuser)
     })
   }, [state.socketId])
 
-  console.log(state,'58')
   return (
     <div className="bg-[#ededed] relative">
-      <div className="h-[18vh] bg-[#4f669b]"></div>
+      <div className="h-[18vh] bg-[#05a884]"></div>
       <div className="flex h-[95vh] absolute w-[98%] border bg-white top-[3vh] left-[1%] shadow-2xl ">
         {profile ? (
           <div className="w-[30%]">

@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send(`hello`);
 });
 
-app.use("/users", UserRouter);
+app.use("/users", UserRouter);  
 app.use("/chat", ChatRouter);
 app.use("/message", MessageRouter);
 app.use("/file", fileRouter);

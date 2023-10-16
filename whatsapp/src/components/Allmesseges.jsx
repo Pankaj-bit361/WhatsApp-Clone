@@ -1,10 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MessegeCard from "./MessegeCard";
 import { ApiUrl } from "../api";
 
 const Allmesseges = ({ con, flag, incoming }) => {
   const [messeges, setMesseges] = useState([]);
+  const scrollRef = useRef(null)
 
   const getMesseges = async () => {
     await axios
@@ -17,7 +18,9 @@ const Allmesseges = ({ con, flag, incoming }) => {
       });
   };
 
-
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ transition: 'smooth' })
+  }, [messeges])
 
   useEffect(() => {
     con._id && getMesseges();
@@ -31,7 +34,7 @@ const Allmesseges = ({ con, flag, incoming }) => {
 
 
   return (
-    <div className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] overflow-x-auto h-[80vh] w-[100%]">
+    <div ref={scrollRef} className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] overflow-x-auto h-[80vh] w-[100%]">
       <div className="pb-[5%]">
         {messeges &&
           messeges?.map((item) => (

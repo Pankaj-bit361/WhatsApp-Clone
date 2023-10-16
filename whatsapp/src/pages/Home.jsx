@@ -15,7 +15,6 @@ const Home = () => {
 
   const loginSuccess = (res) => {
     const decode = jwt_decode(res.credential);
-    // localStorage.setItem("oath", JSON.stringify(decode));
     setState(decode);
 
     axios
@@ -31,12 +30,12 @@ const Home = () => {
 
   return (
     <div className="font-[Open_Sans] bg-[#ededed]">
-      <div className="h-[30vh] bg-[#4f669b] relative">
+      <div className="h-[30vh] bg-[#05a884] relative">
         <div className="flex ml-[17.5%] pt-6 gap-4 ">
           <div className="w-10 ">
             <img
               className="w-10"
-              src="https://www.freepnglogos.com/uploads/wechat-logo-32.png"
+              src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3254551/whatsapp-icon-md.png"
             />
           </div>
           <p className="text-white pt-2 font-medium text-sm">WHATSAPP WEB</p>

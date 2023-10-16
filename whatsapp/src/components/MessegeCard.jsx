@@ -24,10 +24,16 @@ const MessegeCard = ({ createdAt, text, senderId }) => {
         </div>
       ) : (
         <div className="flex gap-1 max-w-[45%] mt-[2px] w-fit bg-[#ffffff] p-[5px] rounded-[5px]  break-words">
-          <h1 className="text-[14px]">{text}</h1>
-          <h1 className="text-[10px] text-[#919191] mt-auto break-keep ">
-            {getDate(createdAt)}
-          </h1>
+          {text?.includes('https://whats-app-clone-orpin.vercel.app') ? (
+            <ImageMessage text={text} createdAt={createdAt} />
+          ) : (
+            <>
+              <h1 className="text-[14px] ">{text}</h1>
+              <h1 className="text-[10px]  text-[#919191] mt-auto">
+                {getDate(createdAt)}
+              </h1>
+            </>
+          )}
         </div>
       )}
     </div>
