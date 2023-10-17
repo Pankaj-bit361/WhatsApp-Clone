@@ -16,7 +16,7 @@ const Home = () => {
   const loginSuccess = (res) => {
     const decode = jwt_decode(res.credential);
     setState(decode);
-
+    localStorage.setItem("oath", JSON.stringify(decode));
     axios
       .post(`${ApiUrl}/users`, decode)
 
