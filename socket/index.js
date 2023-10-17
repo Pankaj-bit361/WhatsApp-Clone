@@ -1,7 +1,7 @@
 const express = require('express')
 const { Server } = require('socket.io')
 const cors = require('cors')
-const { createServer } = require('node:http')
+const { createServer } = require('http')
 const app = express()
 app.use(cors())
 

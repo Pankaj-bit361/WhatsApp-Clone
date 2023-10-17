@@ -19,7 +19,9 @@ const Allmesseges = ({ con, flag, incoming }) => {
   };
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ transition: 'smooth' })
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messeges])
 
   useEffect(() => {
@@ -34,7 +36,8 @@ const Allmesseges = ({ con, flag, incoming }) => {
 
 
   return (
-    <div ref={scrollRef} className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] overflow-x-auto h-[80vh] w-[100%]">
+    <div ref={scrollRef} style={{
+    }} className="bg-[url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')] overflow-x-auto h-[80vh] w-[100%]">
       <div className="pb-[5%]">
         {messeges &&
           messeges?.map((item) => (

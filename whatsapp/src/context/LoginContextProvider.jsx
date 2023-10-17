@@ -10,7 +10,7 @@ const LoginContextProvider = ({ children }) => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('ws://localhost:9000')
+    socket.current = io('http://localhost:9000')
   }, [])
 
   return (
