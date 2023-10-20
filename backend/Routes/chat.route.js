@@ -22,9 +22,11 @@ ChatRouter.post("/",async(req,res)=>{
 })
 
 
-ChatRouter.get('/',async(req,res)=>{   
+ChatRouter.get('/singleMessage',async(req,res)=>{
+    const {senderId,receiverId} =req.query
     try {
-        let chat=await ChatModel.find()
+        let chat=await ChatModel.findOne({members:{$all :[receiverId,senderId]}})
+        console.log(chat)
         res.json(chat)
     } catch (error) {
         res.send({error:error.message})

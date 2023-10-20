@@ -6,7 +6,6 @@ import { MdModeEditOutline } from "react-icons/md";
 
 const Profile = ({ setProfile, profile }) => {
   const oathData = JSON.parse(localStorage.getItem("oath"))
-  console.log(oathData)
   const handleClick = () => {
     setProfile(!profile)
   }
@@ -15,7 +14,7 @@ const Profile = ({ setProfile, profile }) => {
   return (
 
     <div className="bg-[#f0f2f5] h-full transition delay-150 duration-300 ease-in-out">
-      <div className="h-[15vh] bg-[#38496f] ">
+      <div className="h-[15vh] bg-[#05a884] ">
         <div className="pt-16 ml-6 flex gap-8">
           <div className="mt-[1%]" onClick={handleClick} >
             <AiOutlineArrowLeft size={22} color={"white"} />
@@ -32,7 +31,7 @@ const Profile = ({ setProfile, profile }) => {
 
 
       <div className="bg-white">
-        <p className="pt-4 text-[14px] ml-[7%] text-[#38496f]">Your name</p>
+        <p className="pt-4 text-[14px] ml-[7%] text-[#05a884]">Your name</p>
         <div className="flex pt-4 ml-[7%] pb-4 justify-between">
           <h1>{oathData.given_name}</h1>
           <div className="mr-[5%]">
@@ -45,7 +44,7 @@ const Profile = ({ setProfile, profile }) => {
 
       <p className='text-[14px] text-left w-[86%] m-auto mt-4 text-[grey]'>This is not your username or pin. This name is visible to your WhatsApp contacts.</p>
       <div className="bg-white mt-4">
-        <p className="pt-4 text-[14px] ml-[7%] text-[#38496f]">About</p>
+        <p className="pt-4 text-[14px] ml-[7%] text-[#05a884]">About</p>
         <div className="flex pt-4 ml-[7%] pb-4 justify-between">
           <h1>{oathData.name}</h1>
           <div className="mr-[5%]">

@@ -27,8 +27,7 @@ const addUser = (userData, socketId) => {
     }
 }
 
-const getUser = (userId) => {
-    console.log(users, userId, 'line 33')
+const getUser = (userId) => { 
     return users.find(user => user.sub == userId)
 }
 
@@ -39,7 +38,6 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendMessege', (data) => {
-        console.log(data)
         const userdata = getUser(data.receiverId)
         if (userdata && userdata.socketId) {
             io.to(userdata.socketId).emit('getMessege', data)

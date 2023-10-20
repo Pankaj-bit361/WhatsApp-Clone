@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AiOutlineSearch, AiOutlineSend } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineSearch, AiOutlineSend } from "react-icons/ai";
 import { FiMoreVertical } from "react-icons/fi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { BsMicFill } from "react-icons/bs";
@@ -9,7 +9,7 @@ import { LoginContext } from "../context/LoginContextProvider";
 import axios from "axios";
 import { ApiUrl } from "../api";
 
-const MessegeCompont3 = ({ picture, given_name, sub }) => {
+const MessegeCompont3 = ({ picture, given_name, sub, swap, setSwap, sethide }) => {
   const [word, setword] = useState("");
   const { state, socket, activeUsers } = useContext(LoginContext);
   const [con, setcon] = useState({});
@@ -20,7 +20,6 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
 
   const getConversation = async () => {
     let ob = { receiverId: sub, senderId: state.sub };
-    console.log(ob)
     await axios.post(`${ApiUrl}/chat/conversation`, ob).then((res) => {
       setcon(res.data);
     });
@@ -34,7 +33,6 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
 
   useEffect(() => {
     socket.current.on('getMessege', (data) => {
-      console.log(data, '35')
       setincoming({
         ...data,
         createdAt: Date.now()
@@ -43,7 +41,6 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
   }, [])
 
   const postMessage = async () => {
-    console.log('hey', word)
     if (file) {
       let messege = {
         receiverId: sub,
@@ -58,6 +55,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
       setword("");
       setImage('')
       setFile('')
+      setSwap(!swap)
     } else {
       let messege = {
         receiverId: sub,
@@ -72,6 +70,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
         setflag((prev) => !prev);
         setword("");
         setFile('')
+        setSwap(!swap)
       } catch (error) {
         console.log(error.message)
       }
@@ -82,7 +81,7 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
   const handleMessege = async (e) => {
     if (word.length > 0) {
       if (e.keyCode === 13) {
-       postMessage()
+        postMessage()
       }
     }
 
@@ -119,6 +118,9 @@ const MessegeCompont3 = ({ picture, given_name, sub }) => {
     <div>
       <div className="flex h-[7.4vh] bg-[#f0f2f5] justify-between">
         <div className="flex ml-4 gap-3 place-items-center">
+          <div onClick={()=>sethide(false)}>
+            <AiOutlineArrowLeft size={22} color={"black"} />
+          </div>
           <div className="h-[45px] w-[45px]">
             <img className="w-[100%]  h-[45px] rounded-full" src={picture} />
           </div>

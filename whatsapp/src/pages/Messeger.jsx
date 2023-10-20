@@ -18,8 +18,8 @@ const Messeger = () => {
   const { state, setState, socket, setActiveUsers } = useContext(LoginContext);
   const [profile, setProfile] = useState(false);
   const [data, setData] = useState([]);
-  const [swap, setSwap] = useState(true);
-
+  const [swap, setSwap] = useState(false);
+  const [hide, sethide] = useState(false)
   const [search, setSearch] = useState("");
 
   const { person1 } = useContext(LoginContext);
@@ -38,7 +38,7 @@ const Messeger = () => {
   }, [search]);
 
   useEffect(() => {
-    oathData  && oathData.sub && setState(oathData)
+    oathData && oathData.sub && setState(oathData)
   }, [])
 
   const getSingleProfile = async () => {
@@ -47,6 +47,7 @@ const Messeger = () => {
       senderId: state.sub,
     };
     await axios.post(`${ApiUrl}/chat`, ob);
+    sethide(true)
   };
 
   useEffect(() => {
@@ -55,7 +56,6 @@ const Messeger = () => {
       setActiveUsers(users)
       let myuser = users.find((item) => item.sub == state.sub)
       localStorage.setItem("oath", JSON.stringify(myuser));
-
       setState(myuser)
     })
   }, [state.socketId])
@@ -63,13 +63,14 @@ const Messeger = () => {
   return (
     <div className="bg-[#ededed] relative">
       <div className="h-[18vh] bg-[#05a884]"></div>
-      <div className="flex h-[95vh] absolute w-[98%] border bg-white top-[3vh] left-[1%] shadow-2xl ">
+      <div className="flex flex-col h-[95vh] absolute w-[98%] border bg-white top-[3vh] left-[1%] shadow-2xl md:flex-row">
         {profile ? (
-          <div className="w-[30%]">
+          <div className={`${hide ? 'hidden' : 'block'} w-[100%] md:w-[30%]`}>
             <Profile setProfile={setProfile} profile={profile} />
           </div>
+
         ) : (
-          <div className="w-[30%] border ">
+          <div className={`w-[100%] ${hide ? 'hidden' : 'block'} w-full md:w-[30%]`}>
             <div className="flex bg-[#f0f2f5]">
               <div className=" w-[50%] border ">
                 <img
@@ -99,15 +100,16 @@ const Messeger = () => {
             <MessegeComponent1
               getSingleProfile={getSingleProfile}
               data={data}
+              swap={swap} setSwap={setSwap}
             />
           </div>
         )}
 
-        <div className="w-[70%]">
+        <div className={`w-full ${hide ? 'block' : 'hidden'} sm:w-full md:block w-[70%]`}>
           {Object.keys(person1).length == 0 ? (
             <MessegeComponent2 />
           ) : (
-            <MessegeCompont3 {...person1} />
+            <MessegeCompont3 swap={swap} setSwap={setSwap} sethide={sethide} {...person1} />
           )}
         </div>
       </div>

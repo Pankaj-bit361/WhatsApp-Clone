@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import ChatUser from './ChatUser'
 import { LoginContext } from '../context/LoginContextProvider'
 
-const MessegeComponent1 = ({ data, getSingleProfile }) => {
+const MessegeComponent1 = ({ data, getSingleProfile ,swap, setSwap }) => {
 
   // const { state } = useContext(LoginContext)
   let oathData = JSON.parse(localStorage.getItem("oath"));
@@ -11,7 +11,7 @@ const MessegeComponent1 = ({ data, getSingleProfile }) => {
       {data.length > 0 && data.map((item) => (
         item.sub !== oathData.sub &&
         <div key={item.sub}>
-          <ChatUser getSingleProfile={getSingleProfile} item={item} />
+          <ChatUser swap={swap} setSwap={setSwap} getSingleProfile={getSingleProfile} item={item} />
         </div>
 
       ))}

@@ -1,49 +1,48 @@
-
-const express=require(`express`)
+const express = require(`express`)
 const { UserModel } = require("../Models/user.model")
 
-const UserRouter=express.Router()
+const UserRouter = express.Router()
 
 
-UserRouter.get(`/`,async(req,res)=>{
+UserRouter.get(`/`, async (req, res) => {
     try {
-        let user=await UserModel.find()
+        let user = await UserModel.find()
         res.send(user)
     } catch (error) {
-        res.send({msg:error.message})
+        res.send({ msg: error.message })
     }
 })
 
-UserRouter.get(`/:id`,async(req,res)=>{
-const {id}=req.params
-console.log(id)
+UserRouter.get(`/:id`, async (req, res) => {
+    const { id } = req.params
+    console.log(id)
     try {
-        let user=await UserModel.findOne({_id:id})
+        let user = await UserModel.findOne({ _id: id })
         res.send(user)
     } catch (error) {
-        res.send({msg:error.message})
+        res.send({ msg: error.message })
     }
 })
 
-UserRouter.post('/' ,async(req,res)=>{
- let {email}=req.body
- const exist=await UserModel.findOne({email})
- try {
-    if(exist){
-        res.send(`user already exist`)
-     }else{
-        let newuser=new UserModel(req.body)
-        await newuser.save()
-        res.status(200).send({msg:`user registered successfully`})
-     }
-    
- } catch (error) {
-    res.send({err:error.message})
- }
+UserRouter.post('/', async (req, res) => {
+    let { email } = req.body
+    const exist = await UserModel.findOne({ email })
+    try {
+        if (exist) {
+            res.send(`user already exist`)
+        } else {
+            let newuser = new UserModel(req.body)
+            await newuser.save()
+            res.status(200).send({ msg: `user registered successfully` })
+        }
+
+    } catch (error) {
+        res.send({ err: error.message })
+    }
 
 })
-  
 
-module.exports={
+
+module.exports = {
     UserRouter
 }

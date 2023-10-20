@@ -4,8 +4,6 @@ const { MessageModel } = require("../Models/message.model")
 const { ChatModel } = require("../Models/chat.model")
 const MessageRouter=express.Router()
 
-
-
 MessageRouter.post("/",async(req,res)=>{
  console.log(req.body)
 try {

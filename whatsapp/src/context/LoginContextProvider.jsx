@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { createContext, useEffect, useRef, useState } from 'react'
 import { io } from 'socket.io-client'
 export const LoginContext = createContext()
@@ -10,11 +11,11 @@ const LoginContextProvider = ({ children }) => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('http://localhost:9000')
+    socket.current = io('https://whatsapp-socket-cpkh.onrender.com/')
   }, [])
 
   return (
-    <LoginContext.Provider value={{ state, setState, setActiveUsers, activeUsers, person1, setPerson1, socket }} >
+    <LoginContext.Provider value={{ state, setState, setActiveUsers, activeUsers, person1, setPerson1, socket  }} >
       {children}
     </LoginContext.Provider>
   )
