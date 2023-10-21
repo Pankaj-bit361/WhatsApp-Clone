@@ -5,10 +5,7 @@ const ChatRouter=express.Router()
 
 ChatRouter.post("/",async(req,res)=>{
     const {recieverId,senderId}=req.body
-
-
     const exist =await ChatModel.findOne({members:{$all:[recieverId,senderId]}})
-
     if(exist){
         res.send(`chat already exist`)
     }else{
@@ -16,11 +13,7 @@ ChatRouter.post("/",async(req,res)=>{
         await newchat.save()
         res.send(`chat created successfully`)
     }
-
-
-   
 })
-
 
 ChatRouter.get('/singleMessage',async(req,res)=>{
     const {senderId,receiverId} =req.query
@@ -33,9 +26,7 @@ ChatRouter.get('/singleMessage',async(req,res)=>{
     }
 })
 
-
 ChatRouter.post("/conversation",async(req,res)=>{
-
     const {receiverId,senderId}=req.body
     try {
         let conversation=await ChatModel.findOne({members:{$all:[receiverId,senderId]}})
