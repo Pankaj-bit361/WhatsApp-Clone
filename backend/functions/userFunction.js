@@ -26,26 +26,34 @@ const getLogin = async ({ code, redirectUri }) => {
 
       // Check if the response contains data
       if (!response.data) {
-        throw new Error("No data returned from token exchange");
+        return {
+          success: false,
+          message: "No data returned from token exchange",
+        };
       }
 
       console.log("Token response:", response.data);
 
       // Extract tokens from response
-      accessToken = response.data.access_token;
-      refreshToken = response.data.refresh_token;
-      idToken = response.data.id_token;
+      accessToken = response?.data?.access_token;
+      refreshToken = response?.data?.refresh_token;
+      idToken = response?.data.id_token;
 
       // Validate if accessToken is present
       if (!accessToken) {
-        throw new Error("Access token missing from token response");
+        return {
+          success: false,
+          message: "Access token missing from token response",
+        };
       }
     } catch (tokenError) {
-      console.error("Error during token exchange:", tokenError.response?.data || tokenError.message);
-      throw new Error("Failed to exchange authorization code for tokens");
+      console.error(
+        "Error during token exchange:",
+        tokenError.response?.data || tokenError.message
+      );
+      return { success: false, message: tokenError.message };
     }
 
-    // Fetch user information from Google API
     try {
       const userInfoResponse = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -56,24 +64,29 @@ const getLogin = async ({ code, redirectUri }) => {
         }
       );
 
-      // Check if userInfoResponse contains data
       if (!userInfoResponse.data) {
-        throw new Error("No user information returned from Google API");
+        return {
+          success: false,
+          message: "No data returned from user info",
+        };
       }
 
       userInfo = userInfoResponse.data;
 
-      // Ensure the email is available in userInfo
       if (!userInfo.email) {
-        throw new Error("Email missing from user information");
+        return {
+          success: false,
+          message: "Email missing from user information",
+        };
       }
-
     } catch (userInfoError) {
-      console.error("Error fetching user info:", userInfoError.response?.data || userInfoError.message);
-      throw new Error("Failed to fetch user information");
+      console.error(
+        "Error fetching user info:",
+        userInfoError.response?.data || userInfoError.message
+      );
+      return { success: false, message: userInfoError.message };
     }
 
-    // Return successful login data
     return {
       success: true,
       data: {
@@ -82,7 +95,6 @@ const getLogin = async ({ code, redirectUri }) => {
         ...userInfo,
       },
     };
-
   } catch (error) {
     console.error("Error in getLogin:", error.message);
     return { success: false, message: error.message };
