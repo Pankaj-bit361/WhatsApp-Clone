@@ -56,7 +56,7 @@ UserRouter.post("/google/login", async (req, res) => {
         await user.save();
       }
   
-      res.status(200).json({
+      res.send(200).json({
         success: true,
         message: "Login successful",
         accessToken,
@@ -64,7 +64,7 @@ UserRouter.post("/google/login", async (req, res) => {
       });
     } catch (error) {
       console.error("Error during login: ", error.message);
-      res.status(500).json({
+      res.send({
         success: false,
         error: error.message,
       });
