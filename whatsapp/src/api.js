@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const ApiUrl = `https://whats-app-clone-orpin.vercel.app`
+export const ApiUrl = `https://whats-app-backend-ivory.vercel.app`
 
 export const getDate = (date) => {
   let gethours = new Date(date).getHours()
