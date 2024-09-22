@@ -1,27 +1,56 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Qr from "../Images/qr.png";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { LoginContext } from "../context/LoginContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { ApiUrl } from "../api";
+import { config } from "../common/config";
 
 const Home = () => {
   const { state, setState } = useContext(LoginContext);
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const loginSuccess = (res) => {
-    const decode = jwt_decode(res.credential);
-    setState(decode);
-    localStorage.setItem("oath", JSON.stringify(decode));
-    axios
-      .post(`${ApiUrl}/users`, decode)
+  // const loginSuccess = (res) => {
+  //   const decode = jwt_decode(res.credential);
+  //   setState(decode);
+  //   localStorage.setItem("oath", JSON.stringify(decode));
+  //   axios
+  //     .post(`${ApiUrl}/users`, decode)
 
-      .then((res) => { });
-    navigate("/messenger");
+  //     .then((res) => {});
+  //   navigate("/messenger");
+  // };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    let code = queryParams.get("code");
+    if (code) {
+      googleLogin(code);
+    }
+  }, []);
+
+  const googleLogin = async (code) => {
+    try {
+      const response = await axios.post(`${ApiUrl}/users/google/login`, {
+        code,
+        redirectUri: config.APP_URL,
+      });
+
+      if (response.data.success) {
+        setState(response.data.user);
+        localStorage.setItem("oath", JSON.stringify(response.data.user));
+        navigate("/messenger");
+      } else {
+        console.log(response.data.error);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const loginError = (res) => {
@@ -69,7 +98,12 @@ const Home = () => {
           <div className="w-[30%] relative ">
             <img className="w-[100%]" src={Qr} />
             <div className="absolute top-[25%]">
-              <GoogleLogin onSuccess={loginSuccess} onError={loginError} />
+              {/* <GoogleLogin onSuccess={loginSuccess} onError={loginError} /> */}
+              <a
+                href={`https://accounts.google.com/o/oauth2/auth?client_id=${config.GOOGLE_CLIENT_ID}&redirect_uri=${config.APP_URL}&scope=profile%20email&response_type=code`}
+              >
+                Google
+              </a>
             </div>
           </div>
         </div>
