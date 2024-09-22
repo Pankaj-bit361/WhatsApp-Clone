@@ -57,12 +57,14 @@ const Home = () => {
     console.log(res);
   };
 
+  
   return (
     <div className="font-[Open_Sans] bg-[#ededed]">
       <div className="h-[30vh] bg-[#05a884] relative">
         <div className="flex ml-[17.5%] pt-6 gap-4 ">
           <div className="w-10 ">
             <img
+
               className="w-10"
               src="https://creazilla-store.fra1.digitaloceanspaces.com/icons/3254551/whatsapp-icon-md.png"
             />
