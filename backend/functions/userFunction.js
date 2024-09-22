@@ -17,8 +17,8 @@ const getLogin = async ({ code, redirectUri }) => {
         "https://accounts.google.com/o/oauth2/token",
         {
           code,
-          client_id: config.GOOGLE_CLIENT_ID,
-          client_secret: config.GOOGLE_CLIENT_SECRET,
+          client_id: process.env.GOOGLE_CLIENT_ID,
+          client_secret: process.env.GOOGLE_CLIENT_SECRET,
           redirect_uri: redirectUri,
           grant_type: "authorization_code",
         }
