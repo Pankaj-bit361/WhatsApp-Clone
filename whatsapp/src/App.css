@@ -1,14 +1,43 @@
-
 ::-webkit-scrollbar {
-    width:6px !important;
-    height:px !important
+  width: 6px !important;
+  height: px !important;
 }
 
 ::-webkit-scrollbar-thumb {
-    background:grey;
-    border-radius: 5px;  
+  background: grey;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1)
+  background: rgba(0, 0, 0, 0.1);
 }
+
+@media screen and (max-width: 1040px) {
+  .q-reponsive-layout {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .q-reponsive-layout > div {
+    width: 100%;
+  }
+  .q-reponsive-layout .q-reponsive-layout-child {
+    width: 60%;
+    margin: auto;
+    margin-bottom : 50px
+  }
+}
+
+
+@media screen and (max-width: 756px) {
+    .q-reponsive-layout-parent{
+        width: 100%;
+        left: 0;
+    }
+  }
+
+
+  @media screen and (max-width: 520px) {
+    .q-reponsive-layout .q-reponsive-layout-child {
+        width: 80%;
+      }
+  }
