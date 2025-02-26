@@ -8,6 +8,7 @@ const LoginContextProvider = ({ children }) => {
   const [state, setState] = useState({})
   const [person1, setPerson1] = useState({})
   const [activeUsers, setActiveUsers] = useState([])
+  const [currentUser, setCurrentUser] = useState(null)
   const socket = useRef()
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const LoginContextProvider = ({ children }) => {
   }, [])
 
   return (
-    <LoginContext.Provider value={{ state, setState, setActiveUsers, activeUsers, person1, setPerson1, socket  }} >
+    <LoginContext.Provider value={{ state, setState, setActiveUsers, activeUsers, person1, setPerson1, socket , setCurrentUser, currentUser }} >
       {children}
     </LoginContext.Provider>
   )

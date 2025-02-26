@@ -89,7 +89,7 @@ const Messeger = () => {
             <div className="flex gap-2 shadow-md h-[7vh]">
               <input
                 placeholder="  Search or start a new chat"
-                className="border-none w-[90%] mt-2 h-[5vh] rounded ml-2 bg-[#f0f2f5] placeholder:text-[13px] "
+                className="border-none w-[90%] mt-2 h-[5vh] pl-2 outline-none text-[14px] rounded ml-2 bg-[#f0f2f5] placeholder:text-[13px] "
                 onChange={(e) => setSearch(e.target.value)}
               />
 

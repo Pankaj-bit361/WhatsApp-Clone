@@ -118,7 +118,7 @@ const MessegeCompont3 = ({ picture, given_name, sub, swap, setSwap, sethide }) =
     <div>
       <div className="flex h-[7.4vh] bg-[#f0f2f5] justify-between">
         <div className="flex ml-4 gap-3 place-items-center">
-          <div onClick={()=>sethide(false)}>
+          <div className="cursor-pointer" onClick={() => sethide(false)}>
             <AiOutlineArrowLeft size={22} color={"black"} />
           </div>
           <div className="h-[45px] w-[45px]">

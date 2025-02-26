@@ -15,7 +15,7 @@ const MessegeCard = ({ createdAt, text, senderId }) => {
             <ImageMessage text={text} createdAt={createdAt} />
           ) : (
             <>
-              <h1 className="text-[14px]  break-before-all">{text}</h1>
+              <h1 className="text-[14px]  break-before-all break-all">{text}</h1>
               <h1 className="text-[10px] break-before-all  text-[#919191] mt-auto">
                 {getDate(createdAt)}
               </h1>
@@ -28,7 +28,7 @@ const MessegeCard = ({ createdAt, text, senderId }) => {
             <ImageMessage text={text} createdAt={createdAt} />
           ) : (
             <>
-              <h1 className="text-[13px] md:text-[14px] ">{text}</h1>
+              <h1 className="text-[13px] md:text-[14px] break-all">{text}</h1>
               <h1 className="text-[10px]  text-[#919191] mt-auto">
                 {getDate(createdAt)}
               </h1>
